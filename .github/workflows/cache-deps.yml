@@ -1,0 +1,32 @@
+name: Cache Dependencies Example
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 4a: Checkout your repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 4b: Cache dependencies
+      - name: Prime cache cache-89fdc6a
+        id: prime-cache-89fdc6a
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm   # or ~/.cache/pip / node_modules depending on your project
+          key: cache-89fdc6a
+
+      # Step 4c: Show if cache hit or miss
+      - name: Echo cache result
+        run: echo "Cache hit? ${{ steps.prime-cache-89fdc6a.outputs.cache-hit }}"
+
+      # Step 4d: Install dependencies (npm example)
+      - name: Install dependencies
+        run: npm install
